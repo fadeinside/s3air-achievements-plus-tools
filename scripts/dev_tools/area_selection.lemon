@@ -1,0 +1,98 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+// Defines
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+global s16 achievementsplus.selectionTool.tempValue0	// First point X position
+global s16 achievementsplus.selectionTool.tempValue1	// First point Y position
+
+global s16 achievementsplus.selectionTool.tempValue2	// Second point X position
+global s16 achievementsplus.selectionTool.tempValue3	// Second point Y position
+
+global u8 achievementsplus.selectionTool.tempValue4	// Defines the action of the Y button
+// - 0x00 - Initialization / Idle / Reset vars
+// - 0x01 - The first point is set
+// - 0x02 - The second point is set
+
+define achievementsplus.selectionTool.tempValue5	= s16[0xffffb000 + 0x10]	// Main character X position
+define achievementsplus.selectionTool.tempValue6	= s16[0xffffb000 + 0x14]	// Main character Y position
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+// Area Selection Tool
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+//@ Function taken from sonic3air_dev/scripts/maingame/hud/hud.lemon
+//# address-hook(0x00db44) end(0x00dbb2)
+function void RenderHUD()
+{
+	AchievementsPlusTools.hud.updateDraw()
+	
+	AchievementsPlusTools.hud.items()
+	AchievementsPlusTools.hud.updateControl()
+	
+	Renderer.drawCustomSprite("hud_dark_overlay", getScreenWidth() / 0x02, 0x00, 0x00, SPRITE_FLAG_PRIO, 0xffff, 0x00, 0x50)
+}
+
+
+function void AchievementsPlusTools.hud.items()
+{
+	s16 px = 12
+	s16 py = 10
+	
+	AchievementsPlusTools.hud.items.positionDebug(px, py)
+}
+
+
+function void AchievementsPlusTools.hud.items.positionDebug(s16 px, s16 py)
+{
+	{
+		AchievementsPlus.TextManager.drawText(px, py, "Player position:", FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xffff)
+		
+		py += 0x08
+		AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("X: %d", achievementsplus.selectionTool.tempValue5), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xfe4e4eff, 0xffff)
+		
+		py += 0x08
+		AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("Y: %d", achievementsplus.selectionTool.tempValue6), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0x75fe4eff, 0xffff)
+	}
+	
+	py += 18
+	
+	{
+		AchievementsPlus.TextManager.drawText(px, py, "First point:", FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xffff)
+		
+		py += 0x08
+		AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("X: %d", achievementsplus.selectionTool.tempValue0), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xfe4e4eff, 0xffff)
+		
+		py += 0x08
+		AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("Y: %d", achievementsplus.selectionTool.tempValue1), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0x75fe4eff, 0xffff)
+	}
+	
+	px += 72
+	py -= 16
+	
+	{
+		AchievementsPlus.TextManager.drawText(px, py, "Second point:", FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xffff)
+		
+		py += 0x08
+		AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("X: %d", achievementsplus.selectionTool.tempValue2), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xfe4e4eff, 0xffff)
+		
+		py += 0x08
+		AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("Y: %d", achievementsplus.selectionTool.tempValue3), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0x75fe4eff, 0xffff)
+	}
+	
+	if (achievementsplus.selectionTool.tempValue4 == 0x02)
+	{
+		px -= 72
+		py += 18
+		
+		{
+			AchievementsPlus.TextManager.drawText(px, py, "Area size:", FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xffff)
+			
+			py += 0x08
+			AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("X: %d", abs(achievementsplus.selectionTool.tempValue0 - achievementsplus.selectionTool.tempValue2)), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0xfe4e4eff, 0xffff)
+			
+			py += 0x08
+			AchievementsPlus.TextManager.drawText(px + 40, py, stringformat("Y: %d", abs(achievementsplus.selectionTool.tempValue1 - achievementsplus.selectionTool.tempValue3)), FONT_SMALLFONT, FORMAT_NONE, ALIGN_RIGHT, 0x01, 0x75fe4eff, 0xffff)
+		}
+	}
+}
