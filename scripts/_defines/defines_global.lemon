@@ -1,0 +1,19 @@
+global s16 achievementsplus.selectionTool.tempValue0	// First point X position
+global s16 achievementsplus.selectionTool.tempValue1	// First point Y position
+
+global s16 achievementsplus.selectionTool.tempValue2	// Second point X position
+global s16 achievementsplus.selectionTool.tempValue3	// Second point Y position
+
+global u8 achievementsplus.selectionTool.tempValue4	// Defines the action of the Y button
+// - 0x00 - Initialization / Idle / Reset vars
+// - 0x01 - The first point is set
+// - 0x02 - The second point is set
+
+define achievementsplus.selectionTool.tempValue5	= s16[0xffffb000 + 0x10]	// Main character X position
+define achievementsplus.selectionTool.tempValue6	= s16[0xffffb000 + 0x14]	// Main character Y position
+
+global u8 achievementsplus.toolMode.tempValue0	// Defines the arena selection mode
+// - 0x00 - Normal arena selection
+// - 0x01 - Selection blocked arenas
+
+global u8 achievementsplus.wallSelection.tempValue0	// Sets 0x01 when the wall has been spawned

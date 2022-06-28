@@ -1,34 +1,17 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Defines
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
-global s16 achievementsplus.selectionTool.tempValue0	// First point X position
-global s16 achievementsplus.selectionTool.tempValue1	// First point Y position
-
-global s16 achievementsplus.selectionTool.tempValue2	// Second point X position
-global s16 achievementsplus.selectionTool.tempValue3	// Second point Y position
-
-global u8 achievementsplus.selectionTool.tempValue4	// Defines the action of the Y button
-// - 0x00 - Initialization / Idle / Reset vars
-// - 0x01 - The first point is set
-// - 0x02 - The second point is set
-
-define achievementsplus.selectionTool.tempValue5	= s16[0xffffb000 + 0x10]	// Main character X position
-define achievementsplus.selectionTool.tempValue6	= s16[0xffffb000 + 0x14]	// Main character Y position
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Area Selection Tool
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
 //@ Function taken from sonic3air_dev/scripts/maingame/hud/hud.lemon
 //# address-hook(0x00db44) end(0x00dbb2)
 function void RenderHUD()
 {
-	AchievementsPlusTools.hud.updateDraw()
+	Debug.drawRect(achievementsplus.selectionTool.tempValue5, achievementsplus.selectionTool.tempValue6, 0x01, 0x01, 0xfffffff0)
 	
+	if (!debug_mode.state)
+	{
+		base.RenderHUD()
+		return
+	}
+	
+	AchievementsPlusTools.hud.updateDraw()
 	AchievementsPlusTools.hud.items()
-	AchievementsPlusTools.hud.updateControl()
 	
 	Renderer.drawCustomSprite("hud_dark_overlay", getScreenWidth() / 0x02, 0x00, 0x00, SPRITE_FLAG_PRIO, 0xffff, 0x00, 0x50)
 }
@@ -40,6 +23,20 @@ function void AchievementsPlusTools.hud.items()
 	s16 py = 10
 	
 	AchievementsPlusTools.hud.items.positionDebug(px, py)
+	AchievementsPlusTools.hud.items.modeSelected(px, py)
+}
+
+
+function void AchievementsPlusTools.hud.items.modeSelected(s16 px, s16 py)
+{
+	px = getScreenWidth() / 0x02
+	
+	constant array<string> SELECTION_MODE =
+	{
+		"Area selection", "Blocked Wall Selection"
+	}
+	
+	AchievementsPlus.TextManager.drawText(px, py, "Mode: " + SELECTION_MODE[achievementsplus.toolMode.tempValue0], FONT_SMALLFONT, FORMAT_NONE, ALIGN_CENTER, 0x01, 0xffff)
 }
 
 

@@ -2,7 +2,13 @@
 
 #if ACHIEVEMENTS_PLUS_ACTIVE
 
+// Defines
+include _defines/?
+
 // Developer tools
 include dev_tools/?
+
+// Utility
+include utility/?
 
 #endif
