@@ -15,3 +15,15 @@ function void DebugMode.Update()
 	AchievementsPlusTools.hud.updateControl()
 	Debug.drawRect(achievementsplus.selectionTool.tempValue5, achievementsplus.selectionTool.tempValue6, 0x01, 0x01, 0xfffffff0)
 }
+
+//@ Function taken from sonic3air_dev/scripts/maingame/maingame.lemon
+function void initializeMainGame()
+{
+	// Call the base function
+	base.initializeMainGame()
+	
+	if (global.zone_act == 0x0000)
+	{
+		AchievementsPlus.WallManager.addSessionWall(6204, 1017, 104, 108, 69, 0x01)
+	}
+}

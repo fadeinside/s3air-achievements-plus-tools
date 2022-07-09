@@ -1,6 +1,6 @@
 function void AchievementsPlusTools.hud.updateControl()
 {
-	if (Input.buttonPressed(BUTTON_Y) || (achievementsplus.toolMode.tempValue0 && achievementsplus.selectionTool.tempValue4 == 0x02))
+	if (Input.buttonPressed(BUTTON_Y)) //|| (achievementsplus.toolMode.tempValue0 && achievementsplus.selectionTool.tempValue4 == 0x02))
 	{
 		if (!achievementsplus.selectionTool.tempValue4)
 		{
@@ -68,11 +68,14 @@ function void AchievementsPlusTools.hud.updateDraw()
 			u8 tempValue11 = System.rand() % 255
 			u8 tempValue12 = System.rand() % 255
 			
-			string tempValue4 = stringformat("AchievementsPlus.WallManager.addSessionWall(%d, %d, %d, %d, %d, %d)", tempValue9, tempValue10, tempValue7, tempValue8, tempValue11, tempValue12)
+			u16 tempValue13 = abs(achievementsplus.selectionTool.tempValue0 - achievementsplus.selectionTool.tempValue2)
+			u16 tempValue14 = abs(achievementsplus.selectionTool.tempValue1 - achievementsplus.selectionTool.tempValue3)
+			
+			string tempValue4 = stringformat("AchievementsPlus.WallManager.addSessionWall(%d, %d, %d, %d, %d, %d)", tempValue9, tempValue10, tempValue13, tempValue14, tempValue11, tempValue12)
 			
 			if (!achievementsplus.wallSelection.tempValue0)
 			{
-				AchievementsPlus.WallManager.addSessionWall(tempValue9, tempValue10, tempValue7, tempValue8, tempValue11, tempValue12)
+				AchievementsPlus.WallManager.addSessionWall(tempValue9, tempValue10, tempValue13, tempValue14, tempValue11, tempValue12)
 				debugLog(tempValue4)
 				achievementsplus.wallSelection.tempValue0 = 0x01
 			}
