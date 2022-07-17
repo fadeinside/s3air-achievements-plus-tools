@@ -1,0 +1,2 @@
+// Settings
+global u8 SETTING_ACHIEVEPLUS_TOOLS_DEVENABLE	// Enable achievements in Debug mode / Level select 

@@ -1,0 +1,40 @@
+// Saves data stored in Shared Memory into Persistent Data.
+function void AchievementsPlus.AchivementsManager.savePersistentData()
+{
+	// Take no action.
+}
+
+
+// Returns false if achievements cannot be received.
+function bool AchievementsPlus.AchivementsManager.isAchievementsEnabled()
+{
+	// Rolling Demo
+	if (global.game_mode == 0x08)
+		return false
+	
+	// Special stages or Blue Sphere game
+	if (global.game_mode == 0x34 || bluespheres.minigame_mode)
+		return true
+	
+	// Competition mode enabled
+	if (competition_mode.active || global.game_mode == 0x38 || global.game_mode == 0x44 || global.game_mode == 0x50)
+		return true
+	
+	// Disable achievements in Debug mode / Level select
+	if (!SETTING_ACHIEVEPLUS_TOOLS_DEVENABLE)
+	{
+		// Game loaded from Level select
+		if (achievementsplus.level_select.tempValue0 & 0x01)
+			return false
+	
+		// Debug mode active
+		if (Game.getSetting(SETTING_DEBUG_MODE))
+			return false
+	}
+	
+	// Sonic 3 & Knuckles lock-on state
+	if (global.lock_on_state == 0x00)
+		return true
+	
+	return false
+}

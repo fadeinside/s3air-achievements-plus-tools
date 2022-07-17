@@ -1,0 +1,5 @@
+// Loads data stored in Persistent Data into Shared Memory.
+function void AchievementsPlus.RewardsManager.savePersistendData()
+{
+	// Take no action.
+}

@@ -1,6 +1,7 @@
+// The main function is control management in the tool.
 function void AchievementsPlusTools.hud.updateControl()
 {
-	if (Input.buttonPressed(BUTTON_Y)) //|| (achievementsplus.toolMode.tempValue0 && achievementsplus.selectionTool.tempValue4 == 0x02))
+	if (Input.buttonPressed(BUTTON_Y))
 	{
 		if (!achievementsplus.selectionTool.tempValue4)
 		{
@@ -30,6 +31,7 @@ function void AchievementsPlusTools.hud.updateControl()
 }
 
 
+// The main function of rendering rects.
 function void AchievementsPlusTools.hud.updateDraw()
 {
 	if (achievementsplus.selectionTool.tempValue4 == 0x01)

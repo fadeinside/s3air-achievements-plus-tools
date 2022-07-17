@@ -6,6 +6,24 @@
 		"Description": "A tool for selecting an area at the level, getting coordinates and the full code to use in your script.\nThe Achievements Plus itself is required below for correct working.",
 		"URL": "https://github.com/fadeinside/s3air-achievements-plus/",
 		"ModVersion": "v1.0.0",
-		"GameVersion": "22.05.15.0"
+		"GameVersion": "v22.05.15.0"
+	},
+	"Settings":
+	{
+		"List":
+		[
+			{
+				"Category": "Achievements",
+				"InternalName": "SETTING_ACHIEVEPLUS_TOOLS_DEVENABLE",
+				"DisplayName": "Force enabled:",
+				"Variable": "SETTING_ACHIEVEPLUS_TOOLS_DEVENABLE",
+				"DefaultValue": "0",
+				"Options":
+				{
+					"0": "Off (Default)",
+					"1": "On"
+				}
+			}
+		]
 	}
 }

@@ -22,6 +22,7 @@ function void initializeMainGame()
 	// Call the base function
 	base.initializeMainGame()
 	
+	// Test wall spawn in AIZ 1
 	if (global.zone_act == 0x0000)
 	{
 		AchievementsPlus.WallManager.addSessionWall(6204, 1017, 104, 108, 69, 0x01)

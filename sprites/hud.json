@@ -1,6 +1,0 @@
-{
-	// ----- HUD SPRITES ----- //
-	
-	// Dark overlay
-	"hud_dark_overlay": { "File": "hud/hud_black_overlay.png", "Rect": "0,0,496,224", "Center": "248,0" }
-}

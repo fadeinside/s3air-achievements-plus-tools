@@ -1,0 +1,5 @@
+// Saves data stored in Shared Memory into Persistent Data.
+function void AchievementsPlus.WallManager.savePersistentData()
+{
+	// Take no action.
+}
