@@ -13,7 +13,9 @@ define achievementsplus.selectionTool.tempValue5	= s16[0xffffb000 + 0x10]	// Mai
 define achievementsplus.selectionTool.tempValue6	= s16[0xffffb000 + 0x14]	// Main character Y position
 
 global u8 achievementsplus.toolMode.tempValue0	// Defines the arena selection mode
-// - 0x00 - Normal arena selection
-// - 0x01 - Selection blocked arenas
+// - 0x00 - Normal debug mode
+// - 0x01 - Arena selection
+// - 0x02 - Blocked walls selection
+// - 0x03 - Mission block placer
 
 global u8 achievementsplus.wallSelection.tempValue0	// Sets 0x01 when the wall has been spawned

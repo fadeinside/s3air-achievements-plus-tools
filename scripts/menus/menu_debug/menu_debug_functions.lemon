@@ -1,0 +1,158 @@
+// The main function of rendering all items inside the tool,
+function void AchievementsPlusTools.Menu.debugHUD.items()
+{
+	s16 px = 16
+	s16 py = 12
+	
+	AchievementsPlusTools.Menu.debugHUD.items.infoPanel(px, py)
+	AchievementsPlusTools.Menu.debugHUD.items.overlaysPanel(px, py)
+	
+	AchievementsPlusTools.Menu.debugHUD.items.hotkeysPanel(px, py)
+	
+	
+	if (achievementsplus.toolMode.tempValue0 == MODE_MISSIONPLACER)
+	{
+		// Do nothing
+	}
+	else if (achievementsplus.toolMode.tempValue0 != MODE_DEBUGMODE)
+		Debug.drawRect(achievementsplus.selectionTool.tempValue5, achievementsplus.selectionTool.tempValue6, 0x01, 0x01, 0xfffffff0)
+	
+	// Make the screen darker
+	Renderer.drawCustomSprite("menu_background_5", getScreenWidth() / 0x02, 0x00, 0x00, SPRITE_FLAG_PRIO, 0xffff, 0x00, 0x30)
+}
+
+function void AchievementsPlusTools.Menu.debugHUD.items.hotkeysPanel(s16 px, s16 py)
+{
+	py = getScreenHeight() - 12
+	
+	constant array<string> SELECTION_MODE =
+	{
+		"Debug mode", "Area selection", "Wall selection", "Mission block placer"
+	}
+	
+	AchievementsPlus.HotkeysManager.drawHotkey("Y", "Mode: " + SELECTION_MODE[achievementsplus.toolMode.tempValue0], px, py, 0xffff)
+	py -= 16
+	
+	if (achievementsplus.toolMode.tempValue0 != MODE_MISSIONPLACER && achievementsplus.toolMode.tempValue0 != MODE_DEBUGMODE)
+	{
+		if (achievementsplus.selectionTool.tempValue4 & 0x02)
+			AchievementsPlus.HotkeysManager.drawHotkey("X", "Clear area data", px, py, 0xffff)
+		else
+			AchievementsPlus.HotkeysManager.drawHotkey("X", stringformat("Set %s point", (achievementsplus.selectionTool.tempValue4 & 0x01) ? "second" : "first"), px, py, 0xffff)
+		
+		py -= 16
+	}
+	
+	//if (achievementsplus.toolMode.tempValue0 == MODE_DEBUGMODE || (control.pad1.state & CONTROL_DPAD) && achievementsplus.toolMode.tempValue0 != MODE_DEBUGMODE)
+	{
+		AchievementsPlus.HotkeysManager.drawHotkey("B", "Exit", px, py, 0xffff)
+		py -= 16
+	}
+}
+
+function void AchievementsPlusTools.Menu.debugHUD.items.infoPanel(s16 px, s16 py)
+{
+	// Player position
+	
+	// Mini icon
+	// - Monitor.getIconSpriteKey Extra Life icon rendering function for monitor
+	Renderer.drawSpriteTinted(Monitor.getIconSpriteKey(0x01), px, py, 0x00, SPRITE_FLAG_PRIO, 0xffff, 0x00, 0xffffffff, 0x9000)
+	Renderer.drawSpriteTinted(Monitor.getIconSpriteKey(0x01), px, py, 0x00, SPRITE_FLAG_PRIO, 0xffff, 0x00, 0x000000ff, 0xb000, 0xa000)
+	
+	// Player position data
+	AchievementsPlus.TextManager.drawText(px + 12, py, "Player position: " + stringformat("X: %d ", achievementsplus.selectionTool.tempValue5) + stringformat("Y: %d", achievementsplus.selectionTool.tempValue6), FONT_SMALLFONT, FORMAT_NONE, ALIGN_LEFT, 0x01, 0xffff)
+	
+	py += 10
+	
+	// First point position
+	if (achievementsplus.selectionTool.tempValue4)
+	{
+		// Point position data
+		AchievementsPlus.TextManager.drawText(px + 12, py, "Point 1 position: " + stringformat("X: %d ", achievementsplus.selectionTool.tempValue0) + stringformat("Y: %d", achievementsplus.selectionTool.tempValue1), FONT_SMALLFONT, FORMAT_NONE, ALIGN_LEFT, 0x01, 0xffff)
+		
+		py += 10
+	}
+	
+	// Second point position
+	if (achievementsplus.selectionTool.tempValue4 & 0x02)
+	{
+		// Point position data
+		AchievementsPlus.TextManager.drawText(px + 12, py, "Point 2 position: " + stringformat("X: %d ", achievementsplus.selectionTool.tempValue2) + stringformat("Y: %d", achievementsplus.selectionTool.tempValue3), FONT_SMALLFONT, FORMAT_NONE, ALIGN_LEFT, 0x01, 0xffff)
+		
+		py += 10
+	}
+	
+	// Area size
+	if (achievementsplus.selectionTool.tempValue4 > 0x00)
+	{
+		string tempValue0 = stringformat("X: %d ", abs(achievementsplus.selectionTool.tempValue0 - achievementsplus.selectionTool.tempValue2)) + stringformat("Y: %d", abs(achievementsplus.selectionTool.tempValue1 - achievementsplus.selectionTool.tempValue3))
+		if (achievementsplus.selectionTool.tempValue4 == 0x01)
+			tempValue0 = stringformat("X: %d ", abs(achievementsplus.selectionTool.tempValue0 - achievementsplus.selectionTool.tempValue5)) + stringformat("Y: %d", abs(achievementsplus.selectionTool.tempValue1 - achievementsplus.selectionTool.tempValue6))
+		
+		// Size data
+		AchievementsPlus.TextManager.drawText(px + 12, py, "Area size: " + tempValue0, FONT_SMALLFONT, FORMAT_NONE, ALIGN_LEFT, 0x01, 0xffff)
+	}
+}
+
+function void AchievementsPlusTools.Menu.debugHUD.items.overlaysPanel(s16 px, s16 py)
+{
+	if (achievementsplus.selectionTool.tempValue4 == 0x01)
+	{
+		debugDrawOutlineRect(achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue1, achievementsplus.selectionTool.tempValue5 - achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue6 - achievementsplus.selectionTool.tempValue1, 0x51bbfb60)
+		Debug.drawRect(achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue1, achievementsplus.selectionTool.tempValue5 - achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue6 - achievementsplus.selectionTool.tempValue1, 0x51bbfb60)
+		return
+	}
+	
+	if (achievementsplus.toolMode.tempValue0 != MODE_WALLSELECTION)
+	{
+		debugDrawOutlineRect(achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue1, achievementsplus.selectionTool.tempValue2 - achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue3 - achievementsplus.selectionTool.tempValue1, 0x51bbfb60)
+		Debug.drawRect(achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue1, achievementsplus.selectionTool.tempValue2 - achievementsplus.selectionTool.tempValue0, achievementsplus.selectionTool.tempValue3 - achievementsplus.selectionTool.tempValue1, 0x51bbfb60)
+	}
+	
+	if (achievementsplus.selectionTool.tempValue4)
+	{
+		bool tempValue5 = achievementsplus.selectionTool.tempValue0 > achievementsplus.selectionTool.tempValue2
+		bool tempValue6 = achievementsplus.selectionTool.tempValue1 > achievementsplus.selectionTool.tempValue3
+		
+		if (achievementsplus.toolMode.tempValue0 == MODE_AREASELECTION)
+		{
+			debugLog("s16 playerX = s16[0xffffb000 + 0x10]")
+			debugLog("s16 playerY = s16[0xffffb000 + 0x14]")
+			
+			debugLog(" ")
+			
+			string tempValue4 = stringformat("if ((playerY >= %d && playerY <= %d) && (playerX >= %d && playerX <= %d))", !tempValue6 ? achievementsplus.selectionTool.tempValue1 : achievementsplus.selectionTool.tempValue3, tempValue6 ? achievementsplus.selectionTool.tempValue1 : achievementsplus.selectionTool.tempValue3, !tempValue5 ? achievementsplus.selectionTool.tempValue0 : achievementsplus.selectionTool.tempValue2, tempValue5 ? achievementsplus.selectionTool.tempValue0 : achievementsplus.selectionTool.tempValue2)
+			
+			debugLog(tempValue4)
+		} 
+		
+		if (achievementsplus.toolMode.tempValue0 == MODE_WALLSELECTION)
+		{
+			u16 tempValue7 = abs(achievementsplus.selectionTool.tempValue0 - achievementsplus.selectionTool.tempValue2) / 0x02
+			u16 tempValue8 = abs(achievementsplus.selectionTool.tempValue1 - achievementsplus.selectionTool.tempValue3) / 0x02
+			
+			u16 tempValue9 = (tempValue5 ? achievementsplus.selectionTool.tempValue0 : achievementsplus.selectionTool.tempValue2) - tempValue7
+			u16 tempValue10 = (tempValue6 ? achievementsplus.selectionTool.tempValue1 : achievementsplus.selectionTool.tempValue3) - tempValue8
+			
+			u8 tempValue11 = System.rand() % 255
+			u8 tempValue12 = System.rand() % 255
+			
+			u16 tempValue13 = abs(achievementsplus.selectionTool.tempValue0 - achievementsplus.selectionTool.tempValue2)
+			u16 tempValue14 = abs(achievementsplus.selectionTool.tempValue1 - achievementsplus.selectionTool.tempValue3)
+			
+			string tempValue4 = stringformat("AchievementsPlus.WallManager.addSessionWall(%d, %d, %d, %d, %d, %d)", tempValue9, tempValue10, tempValue13, tempValue14, tempValue11, tempValue12)
+			
+			if (!achievementsplus.wallSelection.tempValue0)
+			{
+				AchievementsPlus.WallManager.addSessionWall(tempValue9, tempValue10, tempValue13, tempValue14, tempValue11, tempValue12)
+				debugLog(tempValue4)
+				achievementsplus.wallSelection.tempValue0 = 0x01
+			}
+		}
+	}
+	else
+	{
+		achievementsplus.wallSelection.tempValue0 = 0x00
+		//UnloadObject()
+	}
+}

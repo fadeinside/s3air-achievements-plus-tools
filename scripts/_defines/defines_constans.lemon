@@ -1,0 +1,9 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+// Debug menu
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+// Debug modes
+constant u8 MODE_DEBUGMODE					= 0x00
+constant u8 MODE_AREASELECTION					= 0x01
+constant u8 MODE_WALLSELECTION					= 0x02
+constant u8 MODE_MISSIONPLACER					= 0x03

@@ -1,0 +1,18 @@
+//@ Function taken from sonic3air_dev/scripts/maingame/hud/hud.lemon
+//# address-hook(0x00db44) end(0x00dbb2)
+function void RenderHUD()
+{
+	// Render a regular HUD if not Debug mode
+	if (!debug_mode.state)
+	{
+		// Call the base function
+		base.RenderHUD()
+		
+		AchievementsPlusTools.Menu.debugHUD.items.overlaysPanel(16, 12)
+		
+		// Finish the function on this
+		return
+	}
+	
+	AchievementsPlusTools.Menu.debugHUD.items()
+}

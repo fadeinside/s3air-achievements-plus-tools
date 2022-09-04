@@ -5,11 +5,18 @@
 // Defines
 include _defines/?
 
-// Developer tools
-include dev_tools/?
-
 // Utility
 include utility/?
 include utility/managers/?
+
+// Main game
+include maingame/?
+
+// Menus
+include menus/?
+include menus/menu_debug/?
+
+// General
+include general/?
 
 #endif

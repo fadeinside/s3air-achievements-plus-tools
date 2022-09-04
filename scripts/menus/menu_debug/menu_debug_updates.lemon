@@ -1,0 +1,146 @@
+// The main function of rendering all items inside the tool,
+function void AchievementsPlusTools.Menu.debugHUD.updateControl()
+{
+	bool skipMovement = false
+	D4 = control.pad1.pressed & CONTROL_DPAD
+	
+	if (D4 == 0x00)
+	{
+		if ((control.pad1.state & CONTROL_DPAD) == 0x00)
+		{
+			debug_mode.move_delay = 12
+			debug_mode.move_speed = 15
+			skipMovement = true
+		}
+		else
+		{
+			--debug_mode.move_delay
+			if (debug_mode.move_delay == 0x00)
+			{
+				debug_mode.move_delay = 0x01	// Tha's basically no delay at all
+
+				// Increase movement speed, up to 0xff
+				if (debug_mode.move_speed < 0xff)
+					++debug_mode.move_speed
+				D4 = control.pad1.state
+			}
+		}
+	}
+	else
+	{
+		D4 = control.pad1.state
+	}
+
+	if (!skipMovement)
+	{
+		// Free movement
+		u32 step = (u32(debug_mode.move_speed) + 0x01) << 12
+		D3 = char.position.x
+		D2 = char.position.y
+		if (D4 & CONTROL_UP)
+		{
+			D2 -= step
+			D0 = u32(level.vertical_wrap) << 16
+			D2.s32 = max(D2.s32, D0.s32)
+		}
+		if (D4 & CONTROL_DOWN)
+		{
+			D2 += step
+			D0 = u32(move_area.bottom.target + 223) << 16
+			D2.s32 = min(D2.s32, D0.s32)
+		}
+		if (D4 & CONTROL_LEFT)
+		{
+			D3 -= step
+			D3.s32 = max(D3.s32, 0x00)
+		}
+		if (D4 & CONTROL_RIGHT)
+		{
+			D3 += step
+		}
+		char.position.x = D3
+		char.position.y = D2
+	}
+	
+	if (control.pad1.pressed & CONTROL_B)
+	{
+		debug_mode.state = 0x00
+
+	#if !STANDALONE
+		set_status_register(0x2700)
+	#endif
+		ResetScoreDisplay()
+		hud.dirty.score = 0x01
+		hud.dirty.rings = 0x80
+	#if !STANDALONE
+		set_status_register(0x2300)
+	#endif
+
+		A1 = 0xffffb000
+		objA1.mapping_offset = debug_mode.backup.mapping_offset
+		objA1.sprite_attributes = debug_mode.backup.sprite_attributes
+		DebugMode.ResetSonic()
+		u8[A1 + 0x1e] = 0x13
+		u8[A1 + 0x1f] = 0x09
+	}
+	
+	if (achievementsplus.toolMode.tempValue0 == MODE_AREASELECTION || achievementsplus.toolMode.tempValue0 == MODE_WALLSELECTION)
+	{
+		if (control.pad1.pressed & CONTROL_A)
+		{
+			if (achievementsplus.selectionTool.tempValue4 == 0x00)
+			{
+				achievementsplus.selectionTool.tempValue0 = achievementsplus.selectionTool.tempValue5
+				achievementsplus.selectionTool.tempValue1 = achievementsplus.selectionTool.tempValue6
+				achievementsplus.selectionTool.tempValue4 = 0x01
+			}
+			
+			else if (achievementsplus.selectionTool.tempValue4 == 0x01)
+			{
+				achievementsplus.selectionTool.tempValue2 = achievementsplus.selectionTool.tempValue5
+				achievementsplus.selectionTool.tempValue3 = achievementsplus.selectionTool.tempValue6
+				achievementsplus.selectionTool.tempValue4 = 0x02
+			}
+			
+			else
+			{
+				achievementsplus.selectionTool.tempValue0 = 0x00
+				achievementsplus.selectionTool.tempValue1 = 0x00
+				
+				achievementsplus.selectionTool.tempValue2 = 0x00
+				achievementsplus.selectionTool.tempValue3 = 0x00
+				
+				achievementsplus.selectionTool.tempValue4 = 0x00
+			}
+		}
+	}
+	
+	else if (achievementsplus.toolMode.tempValue0 == MODE_MISSIONPLACER)
+	{
+		if (control.pad1.pressed & CONTROL_A)
+		{
+			// Place Mission block object
+			if (allocDynamicObjectStd())
+			{
+				objA1.position.x.u16 = char.position.x.u16
+				objA1.position.y.u16 = char.position.y.u16
+				
+				objA1.mapping_offset = 0x01ecc6
+				objA1.sprite_attributes = (sprite_attribute.PRIORITY | 0x06bc)
+				objA1.sprite_priority = 0x200
+				objA1.render_flags |= render_flag.WORLD
+				
+				objA1.flags2a |= 0x80
+				objA1.flags2a |= 0x01	// Is Mission block
+				objA1.flags2a |= 0x02	// Is placed in Debug mode
+				
+				objA1.subtype2c = 0x11
+				
+				objA1.box_size.x = ((objA1.subtype2c & 0xf0) >> 0x01) + 0x08
+				objA1.box_size.y = ((objA1.subtype2c & 0x0f) << 0x03) + 0x08
+				
+				objA1.update_address = 0x01ec6c
+			}
+		}
+	}
+}
